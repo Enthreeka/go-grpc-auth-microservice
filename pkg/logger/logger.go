@@ -22,6 +22,7 @@ func (l *Logger) Fatal(format string, v ...any) {
 }
 
 func New() *Logger {
+
 	config := zap.NewDevelopmentConfig()
 	config.DisableStacktrace = true
 
@@ -31,7 +32,9 @@ func New() *Logger {
 	logger, _ := config.Build()
 	sugarLogger := logger.Sugar()
 
-	return &Logger{
+	log := &Logger{
 		sugarLogger: sugarLogger,
 	}
+
+	return log
 }

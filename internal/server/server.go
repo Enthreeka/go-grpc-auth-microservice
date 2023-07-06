@@ -1,12 +1,14 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net"
 
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
+	"github.com/NASandGAP/auth-microservice/pkg/postgres"
 	"google.golang.org/grpc"
 )
 
@@ -15,6 +17,13 @@ type server struct {
 }
 
 func Run(cfg *config.Config, log *logger.Logger) error {
+
+	db, err := postgres.New(context.Background(), cfg.Postgres.URL)
+	if err != nil {
+		log.Fatal("failed to connect postgres: %v", err)
+	}
+
+	defer db.Close()
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.ServerGrpc.Port))
 	if err != nil {
