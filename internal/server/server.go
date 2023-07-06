@@ -9,6 +9,7 @@ import (
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	"github.com/NASandGAP/auth-microservice/pkg/postgres"
+	"github.com/NASandGAP/auth-microservice/pkg/redis"
 	"google.golang.org/grpc"
 )
 
@@ -18,12 +19,19 @@ type server struct {
 
 func Run(cfg *config.Config, log *logger.Logger) error {
 
-	db, err := postgres.New(context.Background(), cfg.Postgres.URL)
+	// Connect to PostgreSQL
+	psql, err := postgres.New(context.Background(), cfg.Postgres.URL)
 	if err != nil {
 		log.Fatal("failed to connect postgres: %v", err)
 	}
+	defer psql.Close()
 
-	defer db.Close()
+	// Connect to Redis
+	rds, err := redis.New(context.Background(), cfg)
+	if err != nil {
+		log.Fatal("redis is not working: %v", err)
+	}
+	defer rds.Close()
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.ServerGrpc.Port))
 	if err != nil {

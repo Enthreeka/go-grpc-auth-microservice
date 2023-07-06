@@ -14,7 +14,6 @@ func (p *Postgres) Close() {
 	if p.Pool != nil {
 		p.Pool.Close()
 	}
-
 }
 
 func New(ctx context.Context, url string) (*Postgres, error) {

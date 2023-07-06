@@ -29,6 +29,7 @@ func New() *Logger {
 	config.EncoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	config.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
+
 	logger, _ := config.Build()
 	sugarLogger := logger.Sugar()
 

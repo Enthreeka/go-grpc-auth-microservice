@@ -27,7 +27,10 @@ type (
 	}
 
 	Redis struct {
-		//		URL string `json:"url"`
+		Password     string `json:"password"`
+		Host         string `json:"host"`
+		Db           int    `json:"db"`
+		MinIdleConns int    `json:"min_idle_conns"`
 	}
 
 	HTTPServer struct {
