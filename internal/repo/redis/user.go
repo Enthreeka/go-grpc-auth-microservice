@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"github.com/NASandGAP/auth-microservice/internal/repo"
 
 	"github.com/NASandGAP/auth-microservice/internal/entity"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
@@ -14,7 +15,7 @@ type userRedisRepo struct {
 	log         *logger.Logger
 }
 
-func NewUserRedisRepo(redisClient *redis.Client, log *logger.Logger) Repository {
+func NewUserRedisRepo(redisClient *redis.Client, log *logger.Logger) repo.Repository {
 	return &userRedisRepo{
 		redisClient: redisClient,
 		log:         log,
@@ -56,5 +57,6 @@ func (u *userRedisRepo) CreateUser(ctx context.Context, user entity.User) error 
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
