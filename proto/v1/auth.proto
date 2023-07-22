@@ -7,24 +7,59 @@ package auth;
 option go_package = "auth.v1";
 
 service AuthService {
-    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc SignIn(SignInRequest) returns (SignInResponse); // Method for logging in to the account
+    rpc SignUp(SignUpRequest) returns (SignUpResponse); // Method for sign up in to service
+    rpc Logout(LogoutRequest) returns (LogoutResponse); // Method for logout from account
+    rpc FindByID(FindByIdRequest) returns (FindByIdResponse); // Method for find user by id
+    rpc FindByEmail(FindByEmailRequest) returns (FindByEmailResponse); // Method for find user by email
 }
 
-message LoginRequest {
+message LogoutRequest {} // Empty message for request
+
+message LogoutResponse {} // Empty message for response
+
+message SignInRequest { // Request login data
+    string email = 1; // Login
+    string password = 2; // Password
+}
+
+message SignInResponse { // Response login data 
+    User user = 1; // Object User
+}
+
+message SignUpRequest { // This request like in login
+    SignInRequest signup = 1; 
+}
+
+message SignUpResponse {
+    Account account = 1; // Object Account
+}
+
+message FindByIdRequest{
+    string id = 1;
+}
+
+message FindByIdResponse{
+    User user = 1; 
+}
+
+message FindByEmailRequest{
     string email = 1;
-    string password = 2;
-
 }
 
-message LoginResponse {
-    User user = 1;
+message FindByEmailResponse{
+    User user = 1; 
 }
 
+message Account{
+    string id = 1; // ID in form UUID
+    string email = 2; // User login
+    string password = 3; // User password 
+    google.protobuf.Timestamp created_at = 4; // Date of creating user
+}
 
 message User {
-    string id = 1;
-    string email = 2;
-    string password = 3;
-    string nickname = 4;
-    google.protobuf.Timestamp created_at = 5;
+    Account account = 1; // Object Account
+    string nickname = 2; // User nickname in service
+    string role = 3; // User role (admin/default user)
 }

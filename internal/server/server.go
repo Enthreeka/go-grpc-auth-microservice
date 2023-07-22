@@ -3,14 +3,13 @@ package server
 import (
 	"context"
 	"fmt"
-	"net"
-
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	"github.com/NASandGAP/auth-microservice/pkg/postgres"
 	"github.com/NASandGAP/auth-microservice/pkg/redis"
 	"google.golang.org/grpc"
+	"net"
 )
 
 type server struct {
