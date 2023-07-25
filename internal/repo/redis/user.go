@@ -3,32 +3,34 @@ package redis
 import (
 	"context"
 	"encoding/json"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-
+	"fmt"
 	"github.com/NASandGAP/auth-microservice/internal/entity"
+	"github.com/NASandGAP/auth-microservice/internal/repo"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
-	"github.com/redis/go-redis/v9"
+	pkg "github.com/NASandGAP/auth-microservice/pkg/redis"
 )
 
 type userRedisRepo struct {
-	redisClient *redis.Client
-	log         *logger.Logger
+	*pkg.Redis
+	*logger.Logger
 }
 
-func NewUserRedisRepo(redisClient *redis.Client, log *logger.Logger) repo.Repository {
+func NewUserRedisRepo(redis *pkg.Redis, log *logger.Logger) repo.Repository {
 	return &userRedisRepo{
-		redisClient: redisClient,
-		log:         log,
+		redis,
+		log,
 	}
 }
 
 func (u *userRedisRepo) GetUserByID(ctx context.Context, id string) (*entity.User, error) {
 	user := new(entity.User)
 
-	userBytes, err := u.redisClient.Get(ctx, id).Bytes()
+	userBytes, err := u.Rds.Get(ctx, id).Bytes()
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(string(userBytes))
 
 	err = json.Unmarshal(userBytes, user)
 	if err != nil {
@@ -39,7 +41,7 @@ func (u *userRedisRepo) GetUserByID(ctx context.Context, id string) (*entity.Use
 }
 
 func (u *userRedisRepo) DeleteUserByID(ctx context.Context, id string) error {
-	err := u.redisClient.Del(ctx, id).Err()
+	err := u.Rds.Del(ctx, id).Err()
 	if err != nil {
 		return err
 	}
@@ -47,16 +49,16 @@ func (u *userRedisRepo) DeleteUserByID(ctx context.Context, id string) error {
 	return nil
 }
 
-func (u *userRedisRepo) CreateUser(ctx context.Context, user entity.User) error {
+func (u *userRedisRepo) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	bytesUser, err := json.Marshal(user)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = u.redisClient.Set(ctx, user.ID, bytesUser, 5).Err()
+	err = u.Rds.Set(ctx, user.ID, bytesUser, 0).Err()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return nil, nil
 }

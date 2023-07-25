@@ -6,8 +6,8 @@ import (
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
-	"github.com/NASandGAP/auth-microservice/pkg/postgres"
 	"github.com/NASandGAP/auth-microservice/pkg/redis"
+	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
 	"google.golang.org/grpc"
 	"net"
 )
@@ -19,18 +19,20 @@ type server struct {
 func Run(cfg *config.Config, log *logger.Logger) error {
 
 	// Connect to PostgreSQL
-	psql, err := postgres.New(context.Background(), cfg.Postgres.URL)
+	psql, err := relationDB.New(context.Background(), cfg.Postgres.URL)
 	if err != nil {
-		log.Fatal("failed to connect postgres: %v", err)
+		log.Fatal("failed to connect PostgreSQL: %v", err)
 	}
 	defer psql.Close()
 
 	// Connect to Redis
 	rds, err := redis.New(context.Background(), cfg)
 	if err != nil {
-		log.Fatal("redis is not working: %v", err)
+		log.Error("redis is not working: %v", err)
 	}
 	defer rds.Close()
+
+	//userRepoPG := postgres.NewUserPostgresRepo(psql.Pool, log)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.ServerGrpc.Port))
 	if err != nil {

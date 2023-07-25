@@ -2,18 +2,17 @@ package redis
 
 import (
 	"context"
-
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	"github.com/redis/go-redis/v9"
 )
 
 type Redis struct {
-	rds *redis.Client
+	Rds *redis.Client
 }
 
 func (r *Redis) Close() {
-	if r.rds != nil {
-		r.rds.Close()
+	if r.Rds != nil {
+		r.Rds.Close()
 	}
 }
 
@@ -32,7 +31,7 @@ func New(ctx context.Context, cfg *config.Config) (*Redis, error) {
 	}
 
 	rds := &Redis{
-		rds: client,
+		Rds: client,
 	}
 
 	return rds, nil

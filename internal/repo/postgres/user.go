@@ -5,15 +5,16 @@ import (
 	"github.com/NASandGAP/auth-microservice/internal/entity"
 	"github.com/NASandGAP/auth-microservice/internal/repo"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
 )
 
 type userPostgresRepo struct {
-	pool *pgxpool.Pool
-	log  *logger.Logger
+	pool relationDB.Pool
+	//db  *relationDB.Postgres
+	log *logger.Logger
 }
 
-func NewUserPostgresRepo(pool *pgxpool.Pool, log *logger.Logger) repo.Repository {
+func NewUserPostgresRepo(pool relationDB.Pool, log *logger.Logger) repo.Repository {
 	return &userPostgresRepo{
 		pool: pool,
 		log:  log,
@@ -21,7 +22,7 @@ func NewUserPostgresRepo(pool *pgxpool.Pool, log *logger.Logger) repo.Repository
 }
 
 func (u *userPostgresRepo) GetUserByID(ctx context.Context, id string) (*entity.User, error) {
-	query := "SELECT id, email , password FROM user WHERE id = $1"
+	query := `SELECT id, email , password FROM "user" WHERE id = $1`
 	var user entity.User
 
 	err := u.pool.QueryRow(ctx, query, id).Scan(&user.ID, &user.Email, &user.Password)
@@ -33,21 +34,27 @@ func (u *userPostgresRepo) GetUserByID(ctx context.Context, id string) (*entity.
 }
 
 func (u *userPostgresRepo) DeleteUserByID(ctx context.Context, id string) error {
-	query := "DELETE FROM user WHERE id = &1"
+	query := `DELETE FROM "user" WHERE id = $1`
 
 	_, err := u.pool.Exec(ctx, query, id)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
-func (u *userPostgresRepo) CreateUser(ctx context.Context, user entity.User) error {
-	query := "INSERT INTO user (email,password) VALUES ($1,$2)"
+func (u *userPostgresRepo) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
+	query := `INSERT INTO "user" (id,email,password) VALUES ($1,$2,$3) RETURNING id,email,password `
 
-	_, err := u.pool.Exec(ctx, query, &user.Email, &user.Password)
+	createdUser := &entity.User{}
+	err := u.pool.QueryRow(ctx, query, user.ID, user.Email, user.Password).Scan(
+		&createdUser.ID,
+		&createdUser.Email,
+		&createdUser.Password)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+
+	return createdUser, nil
 }

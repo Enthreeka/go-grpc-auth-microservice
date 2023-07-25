@@ -8,5 +8,5 @@ import (
 type Repository interface {
 	GetUserByID(ctx context.Context, id string) (*entity.User, error)
 	DeleteUserByID(ctx context.Context, id string) error
-	CreateUser(ctx context.Context, user entity.User) error
+	CreateUser(ctx context.Context, user *entity.User) (*entity.User, error)
 }

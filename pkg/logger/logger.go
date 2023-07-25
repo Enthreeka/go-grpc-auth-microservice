@@ -14,7 +14,7 @@ func (l *Logger) Info(format string, v ...any) {
 }
 
 func (l *Logger) Error(format string, v ...any) {
-	l.sugarLogger.Infof(format, v...)
+	l.sugarLogger.Errorf(format, v...)
 }
 
 func (l *Logger) Fatal(format string, v ...any) {
