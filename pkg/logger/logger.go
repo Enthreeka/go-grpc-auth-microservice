@@ -27,10 +27,11 @@ func New() *Logger {
 	config.DisableStacktrace = true
 
 	config.EncoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
+
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	config.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
 
-	logger, _ := config.Build()
+	logger, _ := config.Build(zap.AddCallerSkip(1))
 	sugarLogger := logger.Sugar()
 
 	log := &Logger{
