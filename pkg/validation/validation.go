@@ -1,14 +1,17 @@
 package validation
 
-import "regexp"
+import (
+	"net/mail"
+	"regexp"
+)
 
 var (
-	emailPattern    = regexp.MustCompile(`^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$`)
 	passwordPattern = regexp.MustCompile(``)
 )
 
 func IsValidEmail(email string) bool {
-	return emailPattern.MatchString(email)
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 func IsValidPassword(password string) bool {

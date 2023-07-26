@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
-	"github.com/NASandGAP/auth-microservice/internal/repo/postgres"
-	redisRepo "github.com/NASandGAP/auth-microservice/internal/repo/redis"
-	"github.com/NASandGAP/auth-microservice/internal/usecase"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	"github.com/NASandGAP/auth-microservice/pkg/redis"
 	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
@@ -36,12 +33,11 @@ func Run(cfg *config.Config, log *logger.Logger) error {
 	defer rds.Close()
 	////////////////////////TEST////////////////////////////////////////////////
 
-	userRepoPG := postgres.NewUserPostgresRepo(psql.Pool, log)
-	userRepoRDS := redisRepo.NewUserRedisRepo(rds, log)
+	//userRepoPG := postgres.NewUserPostgresRepo(psql.Pool, log)
+	//userRepoRDS := redisRepo.NewUserRedisRepo(rds, log)
+	//
+	//userService := usecase.NewUserService(userRepoPG, userRepoRDS, log)
 
-	userService := usecase.NewUserService(userRepoPG, userRepoRDS, log)
-
-	userService.Get(context.Background(), "1")
 	////////////////////////TEST////////////////////////////////////////////////
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.ServerGrpc.Port))
 	if err != nil {

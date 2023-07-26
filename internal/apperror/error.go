@@ -8,8 +8,13 @@ import (
 type statusMessage string
 
 const (
-	invalidRequest statusMessage = "Invalid request"
-	incorrectData  statusMessage = "Incorrect data"
+	invalidRequest  statusMessage = "Invalid request"
+	incorrectData   statusMessage = "Incorrect data"
+	invalidPassword statusMessage = "Invalid password"
+)
+
+var (
+	ErrHashPasswordsNotEqual = NewAppError(errors.New("hashes_not_equal"), invalidPassword)
 )
 
 var (

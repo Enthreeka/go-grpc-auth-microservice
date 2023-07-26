@@ -6,7 +6,6 @@ import (
 	"github.com/NASandGAP/auth-microservice/internal/entity"
 	"github.com/NASandGAP/auth-microservice/internal/repo"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
-	"github.com/NASandGAP/auth-microservice/pkg/validation"
 )
 
 type userService struct {
@@ -26,21 +25,26 @@ func NewUserService(pg repo.Repository, redis repo.Repository, log *logger.Logge
 func (u *userService) Create(ctx context.Context, user *entity.User) (*entity.User, error) {
 	u.log.Info("Сreating a user")
 
-	if !validation.IsValidEmail(user.Email) && !validation.IsValidPassword(user.Password) {
-		return nil, apperror.ErrDataNotValid
-	}
-
-	_, err := u.postgres.CreateUser(ctx, user)
+	argonParams := &Argon{}
+	hashPassword, err := generateHashFromPassword(user, argonParams)
 	if err != nil {
-		return nil, apperror.ErrUserExist
+		return nil, err
+	}
+	user.Password = hashPassword
+
+	createdUser, err := u.postgres.CreateUser(ctx, user)
+	if err != nil {
+		//return nil, apperror.ErrUserExist
+		return nil, err
 	}
 
 	_, err = u.redis.CreateUser(ctx, user)
 	if err != nil {
-		return nil, apperror.ErrUserExist
+		//return nil, apperror.ErrUserExist
+		return nil, err
 	}
 
-	panic("implement me")
+	return createdUser, nil
 }
 
 func (u *userService) Get(ctx context.Context, id string) (*entity.User, error) {
