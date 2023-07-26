@@ -9,9 +9,11 @@ type statusMessage string
 
 const (
 	invalidRequest statusMessage = "Invalid request"
+	incorrectData  statusMessage = "Incorrect data"
 )
 
 var (
+	ErrDataNotValid = NewAppError(errors.New("password_or_email_not_valid"), incorrectData)
 	ErrUserExist    = NewAppError(errors.New("user_exist"), invalidRequest)
 	ErrUserNotExist = NewAppError(errors.New("user_not_exist"), invalidRequest)
 )

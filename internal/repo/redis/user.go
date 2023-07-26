@@ -3,34 +3,38 @@ package redis
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/NASandGAP/auth-microservice/internal/entity"
 	"github.com/NASandGAP/auth-microservice/internal/repo"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	pkg "github.com/NASandGAP/auth-microservice/pkg/redis"
+	"sync"
+	"time"
 )
 
 type userRedisRepo struct {
 	*pkg.Redis
 	*logger.Logger
+
+	sync.Mutex
 }
 
 func NewUserRedisRepo(redis *pkg.Redis, log *logger.Logger) repo.Repository {
 	return &userRedisRepo{
-		redis,
-		log,
+		Redis:  redis,
+		Logger: log,
 	}
 }
 
 func (u *userRedisRepo) GetUserByID(ctx context.Context, id string) (*entity.User, error) {
+	u.Lock()
+	defer u.Unlock()
+
 	user := new(entity.User)
 
 	userBytes, err := u.Rds.Get(ctx, id).Bytes()
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(string(userBytes))
 
 	err = json.Unmarshal(userBytes, user)
 	if err != nil {
@@ -55,7 +59,7 @@ func (u *userRedisRepo) CreateUser(ctx context.Context, user *entity.User) (*ent
 		return nil, err
 	}
 
-	err = u.Rds.Set(ctx, user.ID, bytesUser, 0).Err()
+	err = u.Rds.Set(ctx, user.ID, bytesUser, 360*time.Hour).Err()
 	if err != nil {
 		return nil, err
 	}
