@@ -14,7 +14,7 @@ type userService struct {
 	log      *logger.Logger
 }
 
-func NewUserService(pg repo.Repository, redis repo.Repository, log *logger.Logger) UserService {
+func NewUserService(pg repo.Repository, redis repo.Repository, log *logger.Logger) User {
 	return &userService{
 		postgres: pg,
 		redis:    redis,
@@ -74,6 +74,15 @@ func (u *userService) Get(ctx context.Context, id string) (*entity.User, error) 
 }
 
 func (u *userService) Delete(ctx context.Context, id string) error {
+	err := u.postgres.DeleteUserByID(ctx, id)
+	if err != nil {
+		return err
+	}
 
-	panic("implement me")
+	err = u.redis.DeleteUserByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
