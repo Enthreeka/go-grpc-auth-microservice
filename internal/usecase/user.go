@@ -9,12 +9,12 @@ import (
 )
 
 type userService struct {
-	postgres repo.Repository
-	redis    repo.Repository
+	postgres repo.UserRepository
+	redis    repo.UserRepository
 	log      *logger.Logger
 }
 
-func NewUserService(pg repo.Repository, redis repo.Repository, log *logger.Logger) User {
+func NewUserService(pg repo.UserRepository, redis repo.UserRepository, log *logger.Logger) User {
 	return &userService{
 		postgres: pg,
 		redis:    redis,

@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func SetupRedis() repo.Repository {
+func SetupRedis() repo.UserRepository {
 	mr, err := miniredis.Run()
 	if err != nil {
 		log.Fatal(err)

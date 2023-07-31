@@ -18,7 +18,7 @@ type userRedisRepo struct {
 	sync.Mutex
 }
 
-func NewUserRedisRepo(redis *pkg.Redis, log *logger.Logger) repo.Repository {
+func NewUserRedisRepo(redis *pkg.Redis, log *logger.Logger) repo.UserRepository {
 	return &userRedisRepo{
 		Redis:  redis,
 		Logger: log,

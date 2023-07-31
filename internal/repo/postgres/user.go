@@ -14,7 +14,7 @@ type userPostgresRepo struct {
 	log *logger.Logger
 }
 
-func NewUserPostgresRepo(pool relationDB.Pool, log *logger.Logger) repo.Repository {
+func NewUserPostgresRepo(pool relationDB.Pool, log *logger.Logger) repo.UserRepository {
 	return &userPostgresRepo{
 		pool: pool,
 		log:  log,

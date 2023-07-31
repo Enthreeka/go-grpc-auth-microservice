@@ -12,11 +12,11 @@ import (
 // Argon Struct stores parameters for hash function
 type Argon struct {
 	salt    []byte
+	version int
+	threads uint8
 	time    uint32
 	memory  uint32
-	threads uint8
 	keyLen  uint32
-	version int
 }
 
 // TODO Create global salt
