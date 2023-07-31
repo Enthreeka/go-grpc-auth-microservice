@@ -22,10 +22,10 @@ func NewUserPostgresRepo(pool relationDB.Pool, log *logger.Logger) repo.UserRepo
 }
 
 func (u *userPostgresRepo) GetUserByID(ctx context.Context, id string) (*entity.User, error) {
-	query := `SELECT id, email , password FROM "user" WHERE id = $1`
+	query := `SELECT id, email, password, role FROM "user" WHERE id = $1`
 	var user entity.User
 
-	err := u.pool.QueryRow(ctx, query, id).Scan(&user.ID, &user.Email, &user.Password)
+	err := u.pool.QueryRow(ctx, query, id).Scan(&user.ID, &user.Email, &user.Password, &user.Role)
 	if err != nil {
 		return nil, err
 	}

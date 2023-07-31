@@ -7,19 +7,19 @@ import (
 
 func GenerateToken(userID string, role string, subject string) (string, error) {
 
-	customClaims := CustomClaims{
+	customClaims := &customClaims{
 		userID,
-		role,
+		role == "admin",
 		jwt.RegisteredClaims{
 			Issuer:    "Издатель токена",
 			Subject:   subject,
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 1)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, customClaims)
 
-	//TODO Create string
-	return token.SignedString("")
+	key := []byte("i52GpyuGaN.QMreM7V09f.l3sUPoUXNI")
+	return token.SignedString(key)
 }

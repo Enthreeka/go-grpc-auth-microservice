@@ -1,20 +1,19 @@
 package jwt
 
 import (
-	"errors"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type CustomClaims struct {
+type customClaims struct {
 	UserID               string `json:"user_id"`
-	Role                 string `json:"role"`
+	Admin                bool   `json:"admin"`
 	jwt.RegisteredClaims `json:"registered_claims"`
 }
 
-func (c *CustomClaims) Validate() error {
-	if (c.Role != "user") && (c.Role != "admin") {
-		return errors.New("must be user or admin") // TODO create new error
-	}
-
-	return nil
-}
+//func (c *customClaims) Validate() error {
+//	if (c.Role != "user") && (c.Role != "admin") {
+//		return errors.New("must be user or admin") // TODO create new error
+//	}
+//
+//	return nil
+//}
