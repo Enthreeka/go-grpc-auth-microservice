@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
+
 package auth;
 
 option go_package = "auth.v1";

@@ -19,6 +19,7 @@ lint:
 	echo "Starting linters"
 	golangci-lint run ./... #--timeout=10m
 
+
 test:
 	go test -v ./internal/repo/postgres ./internal/repo/redis -parallel 2
 
