@@ -1,6 +1,8 @@
 package jwt
 
-import "github.com/golang-jwt/jwt/v5"
+import (
+	"github.com/golang-jwt/jwt/v5"
+)
 
 // TODO создать ошибку
 func ParseToken(accessToken string) (*customClaims, error) {

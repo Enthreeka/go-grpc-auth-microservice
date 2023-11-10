@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
 )
@@ -12,13 +11,6 @@ type userPostgresRepo struct {
 	pool relationDB.Pool
 	//db  *relationDB.Postgres
 	log *logger.Logger
-}
-
-func NewUserPostgresRepo(pool relationDB.Pool, log *logger.Logger) repo.UserRepository {
-	return &userPostgresRepo{
-		pool: pool,
-		log:  log,
-	}
 }
 
 func (u *userPostgresRepo) GetUserByID(ctx context.Context, id string) (*entity.User, error) {
@@ -48,7 +40,7 @@ func (u *userPostgresRepo) CreateUser(ctx context.Context, user *entity.User) (*
 	query := `INSERT INTO "user" (id,email,password) VALUES ($1,$2,$3) RETURNING id,email,password `
 
 	createdUser := &entity.User{}
-	err := u.pool.QueryRow(ctx, query, user.ID, user.Email, user.Password).Scan(
+	err := u.pool.QueryRow(ctx, query, user.ID.String(), user.Email, user.Password).Scan(
 		&createdUser.ID,
 		&createdUser.Email,
 		&createdUser.Password)

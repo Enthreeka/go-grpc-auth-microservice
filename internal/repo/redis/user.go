@@ -59,7 +59,7 @@ func (u *userRedisRepo) CreateUser(ctx context.Context, user *entity.User) (*ent
 		return nil, err
 	}
 
-	err = u.Rds.Set(ctx, user.ID, bytesUser, 360*time.Hour).Err()
+	err = u.Rds.Set(ctx, user.ID.String(), bytesUser, 360*time.Hour).Err()
 	if err != nil {
 		return nil, err
 	}

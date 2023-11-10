@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"github.com/NASandGAP/auth-microservice/internal/config"
 	pb "github.com/NASandGAP/auth-microservice/internal/delivery/grpc"
+	"github.com/NASandGAP/auth-microservice/internal/entity"
+	redisRepo "github.com/NASandGAP/auth-microservice/internal/repo/redis"
 	"github.com/NASandGAP/auth-microservice/pkg/logger"
 	"github.com/NASandGAP/auth-microservice/pkg/redis"
 	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"net"
+	"time"
 )
 
 type server struct {
@@ -37,6 +41,59 @@ func Run(cfg *config.Config, log *logger.Logger) error {
 	//userRepoRDS := redisRepo.NewUserRedisRepo(rds, log)
 	//
 	//userService := usecase.NewUserService(userRepoPG, userRepoRDS, log)
+
+	//tokenRepoPG := postgres.NewTokenPostgresRepo(psql.Pool)
+	//
+	//tokEN := &entity.Token{
+	//	UserID:       "000be075-062d-4721-b208-0516b961ac56",
+	//	RefreshToken: "000be075-062d-4721-b208-0516b961ac56",
+	//	ExpiresAt:    time.Now().Add(120 * time.Second),
+	//}
+	//
+	//createdToken, err := tokenRepoPG.CreateToken(context.Background(), tokEN)
+	//if err != nil {
+	//	log.Error("%v", err)
+	//}
+	//log.Info("%#v", createdToken)
+	//
+	//newToken, err := tokenRepoPG.GetTokenByID(context.Background(), createdToken.ID)
+	//if err != nil {
+	//	log.Error("%v", err)
+	//}
+	//log.Info("%#v", newToken)
+	//
+	//err = tokenRepoPG.DeleteTokenByID(context.Background(), createdToken.ID)
+	//if err != nil {
+	//	log.Error("%v", err)
+	//}
+	//log.Info("Token was deleted succesfuly!")
+
+	userRepoRDS := redisRepo.NewUserRedisRepo(rds, log)
+
+	uuid := uuid.New()
+	usr := &entity.User{
+		ID:       uuid,
+		Email:    "testik@mail.sos",
+		Role:     "user",
+		Password: "testikebanniy",
+	}
+
+	_, err = userRepoRDS.CreateUser(context.Background(), usr)
+	if err != nil {
+		log.Error("%v", err)
+	}
+
+	tokenRepoRDS := redisRepo.NewTokenRedisRepo(rds)
+	tokEN := &entity.Token{
+		UserID:       uuid,
+		RefreshToken: "000be075-062d-4721-b208-0516b961ac56",
+		ExpiresAt:    time.Now().Add(120 * time.Second),
+	}
+
+	_, err = tokenRepoRDS.CreateToken(context.Background(), tokEN)
+	if err != nil {
+		log.Error("%v", err)
+	}
 
 	////////////////////////TEST////////////////////////////////////////////////
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.ServerGrpc.Port))
