@@ -4,13 +4,11 @@ import (
 	"crypto/subtle"
 	"encoding/hex"
 	"github.com/Enthreeka/auth-microservice/internal/apperror"
-	"github.com/Enthreeka/auth-microservice/internal/entity"
-	"github.com/Enthreeka/auth-microservice/pkg/validation"
 	"golang.org/x/crypto/argon2"
 )
 
-// Argon Struct stores parameters for hash function
-type Argon struct {
+// argon Struct stores parameters for hash function
+type argon struct {
 	salt    []byte
 	version int
 	threads uint8
@@ -19,50 +17,40 @@ type Argon struct {
 	keyLen  uint32
 }
 
-// TODO Create global salt
-// Salt settings for hash generation. Salt = user_id + ...
-func (a *Argon) setSalt(salt string) {
-	userSalt := []byte(salt)
-	a.salt = userSalt
+// NewArgonPassword creates an instance of the structure
+func NewArgonPassword(salt string) *argon {
+	return &argon{
+		salt:    []byte(salt),
+		time:    1,
+		memory:  64 * 1024,
+		threads: 4,
+		keyLen:  32,
+	}
 }
 
-// Set parameters for function IDKey
-func (a *Argon) setParamsArgon() {
-	a.time = 1
-	a.memory = 64 * 1024
-	a.threads = 4
-	a.keyLen = 32
-}
-
-// This function generating hash in format argon2. Version = 0x13. Also,
+// generateHashFromPassword generating hash in format argon2. Version = 0x13. Also,
 // validation here performs for email and password. Validation here need for
 // screening out in case false on early stage.
-func generateHashFromPassword(user *entity.User, a *Argon) (string, error) {
-	if !validation.IsValidEmail(user.Email) && !validation.IsValidPassword(user.Password) {
-		return "", apperror.ErrDataNotValid
-	}
+func (a *argon) generateHashFromPassword(password string) (string, error) {
+	//if !validation.IsValidEmail(user.Login) && !validation.IsValidPassword(user.Password) {
+	//	return "", apperror.ErrDataNotValid
+	//}
 
-	a.setSalt(user.ID)
-	a.setParamsArgon()
-
-	hashPasswordByte := argon2.IDKey([]byte(user.Password), a.salt, a.time, a.memory, a.threads, a.keyLen)
+	hashPasswordByte := argon2.IDKey([]byte(password), a.salt, a.time, a.memory, a.threads, a.keyLen)
 	hashPasswordString := hex.EncodeToString(hashPasswordByte)
 
 	return hashPasswordString, nil
 }
 
-// Verify serves for compare the entered password and the password in the database
-func verifyPassword(hashPassword string, user *entity.User, a *Argon) (bool, error) {
-	a.setSalt(user.ID)
-	a.setParamsArgon()
-
-	newHashByte := argon2.IDKey([]byte(user.Password), a.salt, a.time, a.memory, a.threads, a.keyLen)
+// VerifyPassword serves for compare the entered password and the password in the database
+func (a *argon) VerifyPassword(hashPassword string, id string, password string) error {
+	newHashByte := argon2.IDKey([]byte(password), a.salt, a.time, a.memory, a.threads, a.keyLen)
 
 	newHashString := hex.EncodeToString(newHashByte)
 
-	if subtle.ConstantTimeCompare([]byte(hashPassword), []byte(newHashString)) == 0 {
-		return false, apperror.ErrHashPasswordsNotEqual
+	if subtle.ConstantTimeCompare([]byte(hashPassword), []byte(newHashString)) != 1 {
+		return apperror.ErrHashPasswordsNotEqual
 	}
 
-	return true, nil
+	return nil
 }

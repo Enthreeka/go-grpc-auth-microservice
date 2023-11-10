@@ -1,4 +1,4 @@
-package relationDB
+package postgres
 
 import (
 	"context"

@@ -25,8 +25,8 @@ func NewUserService(pg repo.UserRepository, redis repo.UserRepository, log *logg
 func (u *userService) Create(ctx context.Context, user *entity.User) (*entity.User, error) {
 	u.log.Info("Сreating a user")
 
-	argonParams := &Argon{}
-	hashPassword, err := generateHashFromPassword(user, argonParams)
+	argon := NewArgonPassword(user.ID.String())
+	hashPassword, err := argon.generateHashFromPassword(user.Password)
 	if err != nil {
 		return nil, err
 	}

@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"github.com/Enthreeka/auth-microservice/internal/config"
+	"github.com/redis/go-redis/v9"
 )
 
 type Redis struct {

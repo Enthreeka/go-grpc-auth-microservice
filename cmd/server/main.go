@@ -13,7 +13,7 @@ func main() {
 
 	cfg, err := config.New(path)
 	if err != nil {
-		log.Error("failed to load config: %v", err)
+		log.Fatal("failed to load config: %v", err)
 	}
 
 	if err := server.Run(cfg, log); err != nil {
