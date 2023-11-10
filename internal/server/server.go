@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Enthreeka/auth-microservice/internal/config"
 	pb "github.com/Enthreeka/auth-microservice/internal/delivery/v1/grpc"
+	"github.com/Enthreeka/auth-microservice/internal/interceptor"
 	"github.com/Enthreeka/auth-microservice/pkg/logger"
 	"github.com/Enthreeka/auth-microservice/pkg/postgres"
 	"github.com/Enthreeka/auth-microservice/pkg/redis"
@@ -33,7 +34,9 @@ func Run(cfg *config.Config, log *logger.Logger) error {
 		return err
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.UnaryInterceptor(interceptor.UnaryInterceptor),
+	)
 	authServiceServer := pb.NewAuthServerGRPC(log, nil, nil)
 
 	pb.RegisterAuthServiceServer(s, authServiceServer)

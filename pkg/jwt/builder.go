@@ -5,11 +5,19 @@ import (
 	"time"
 )
 
-func GenerateToken(userID string, role string, subject string) (string, error) {
+type builder struct {
+	key []byte
+}
 
+func NewToken(key []byte) *builder {
+	return &builder{
+		key: key,
+	}
+}
+
+func (b *builder) generateToken(userID string, subject string) (string, error) {
 	customClaims := &customClaims{
 		userID,
-		role == "admin",
 		jwt.RegisteredClaims{
 			Issuer:    "Издатель токена",
 			Subject:   subject,
@@ -20,6 +28,6 @@ func GenerateToken(userID string, role string, subject string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, customClaims)
 
-	key := []byte("i52GpyuGaN.QMreM7V09f.l3sUPoUXNI")
-	return token.SignedString(key)
+	//key := []byte("i52GpyuGaN.QMreM7V09f.l3sUPoUXNI")
+	return token.SignedString(b.key)
 }

@@ -6,7 +6,6 @@ import (
 
 type customClaims struct {
 	UserID               string `json:"user_id"`
-	Admin                bool   `json:"admin"`
 	jwt.RegisteredClaims `json:"registered_claims"`
 }
 
