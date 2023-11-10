@@ -4,12 +4,12 @@ import (
 	"context"
 	"github.com/Enthreeka/auth-microservice/internal/entity"
 	"github.com/Enthreeka/auth-microservice/pkg/logger"
-	"github.com/Enthreeka/auth-microservice/pkg/relationDB"
+	"github.com/Enthreeka/auth-microservice/pkg/postgres"
 )
 
 type userPostgresRepo struct {
-	pool relationDB.Pool
-	//db  *relationDB.Postgres
+	pool postgres.Pool
+	//db  *postgres.Postgres
 	log *logger.Logger
 }
 

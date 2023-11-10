@@ -4,14 +4,14 @@ import (
 	"context"
 	"github.com/Enthreeka/auth-microservice/internal/entity"
 	"github.com/Enthreeka/auth-microservice/internal/repo"
-	"github.com/Enthreeka/auth-microservice/pkg/relationDB"
+	"github.com/Enthreeka/auth-microservice/pkg/postgres"
 )
 
 type tokenPostgresRepo struct {
-	pool relationDB.Pool
+	pool postgres.Pool
 }
 
-func NewTokenPostgresRepo(pool relationDB.Pool) repo.TokenRepository {
+func NewTokenPostgresRepo(pool postgres.Pool) repo.TokenRepository {
 	return &tokenPostgresRepo{
 		pool: pool,
 	}
