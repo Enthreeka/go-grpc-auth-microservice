@@ -26,8 +26,3 @@ go.work
 # GoLand files
 .idea
 
-# Config
-configs
-
-# migrations
-migrations

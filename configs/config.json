@@ -1,0 +1,26 @@
+{
+    "grpc_server":{
+        "port":"50051"
+    },
+
+    "grpc_client":{
+        "port":"50051"
+    },
+
+    "postgres":{
+        "url":"postgres://postgres:1234@localhost:5432/auth"
+    },
+
+    "redis":{
+        "password":"",
+        "host":":6379",
+        "db": 0,
+        "min_idle_conns": 5
+    },
+
+    "http_server":{
+        "hostname":"",
+        "port":"",
+        "type_server":""
+    }
+}
