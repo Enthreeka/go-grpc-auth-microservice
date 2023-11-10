@@ -3,10 +3,10 @@ package redis
 import (
 	"context"
 	"encoding/json"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-	"github.com/NASandGAP/auth-microservice/pkg/logger"
-	pkg "github.com/NASandGAP/auth-microservice/pkg/redis"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
+	"github.com/Enthreeka/auth-microservice/pkg/logger"
+	pkg "github.com/Enthreeka/auth-microservice/pkg/redis"
 	"sync"
 	"time"
 )

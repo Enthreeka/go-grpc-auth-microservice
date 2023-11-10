@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/apperror"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-	"github.com/NASandGAP/auth-microservice/pkg/logger"
+	"github.com/Enthreeka/auth-microservice/internal/apperror"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
+	"github.com/Enthreeka/auth-microservice/pkg/logger"
 )
 
 type userService struct {

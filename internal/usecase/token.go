@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
 )
 
 type tokenService struct {

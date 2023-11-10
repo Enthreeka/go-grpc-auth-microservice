@@ -2,9 +2,9 @@ package redis
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-	pkg "github.com/NASandGAP/auth-microservice/pkg/redis"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
+	pkg "github.com/Enthreeka/auth-microservice/pkg/redis"
 	"reflect"
 	"sync"
 )

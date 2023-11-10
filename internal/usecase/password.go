@@ -3,9 +3,9 @@ package usecase
 import (
 	"crypto/subtle"
 	"encoding/hex"
-	"github.com/NASandGAP/auth-microservice/internal/apperror"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/pkg/validation"
+	"github.com/Enthreeka/auth-microservice/internal/apperror"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/pkg/validation"
 	"golang.org/x/crypto/argon2"
 )
 

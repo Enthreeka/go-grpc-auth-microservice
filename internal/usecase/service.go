@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
 )
 
 type User interface {

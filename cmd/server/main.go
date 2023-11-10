@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/NASandGAP/auth-microservice/internal/config"
-	"github.com/NASandGAP/auth-microservice/internal/server"
-	"github.com/NASandGAP/auth-microservice/pkg/logger"
+	"github.com/Enthreeka/auth-microservice/internal/config"
+	"github.com/Enthreeka/auth-microservice/internal/server"
+	"github.com/Enthreeka/auth-microservice/pkg/logger"
 )
 
 func main() {

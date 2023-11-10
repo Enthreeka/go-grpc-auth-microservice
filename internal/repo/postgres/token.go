@@ -2,9 +2,9 @@ package postgres
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-	"github.com/NASandGAP/auth-microservice/pkg/relationDB"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
+	"github.com/Enthreeka/auth-microservice/pkg/relationDB"
 )
 
 type tokenPostgresRepo struct {

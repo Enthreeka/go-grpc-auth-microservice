@@ -2,12 +2,10 @@ package redis
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
-	"github.com/NASandGAP/auth-microservice/internal/repo"
-	pkg "github.com/NASandGAP/auth-microservice/pkg/redis"
-	"github.com/alicebob/miniredis/v2"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/repo"
+	pkg "github.com/Enthreeka/auth-microservice/pkg/redis"
 	"github.com/google/uuid"
-	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/require"
 	"log"
 	"testing"

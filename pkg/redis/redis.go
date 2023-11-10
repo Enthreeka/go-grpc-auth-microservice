@@ -2,8 +2,7 @@ package redis
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/config"
-	"github.com/redis/go-redis/v9"
+	"github.com/Enthreeka/auth-microservice/internal/config"
 )
 
 type Redis struct {

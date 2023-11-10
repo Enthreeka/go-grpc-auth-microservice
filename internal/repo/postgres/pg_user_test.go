@@ -2,9 +2,8 @@ package postgres
 
 import (
 	"context"
-	"github.com/NASandGAP/auth-microservice/internal/entity"
+	"github.com/Enthreeka/auth-microservice/internal/entity"
 	"github.com/google/uuid"
-	"github.com/pashagolub/pgxmock/v2"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
